@@ -154,10 +154,10 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
           <div className="flex space-x-2">
             <input
               type="text"
-              placeholder="Search with fuzzy matching (try: 'documnt', 'parsing', 'chunking')..."
+              placeholder="Search with fuzzy matching (try: 'document', 'parsing', 'chunking')..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSearch()}
               className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 outline-none"
             />
             <button
@@ -178,8 +178,8 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
                 min="0"
                 max="50"
                 value={searchThreshold}
-                onChange={(e) => setSearchThreshold(parseInt(e.target.value))}
-                className="w-20"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchThreshold(parseInt(e.target.value))}
+                className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:hover:bg-blue-700 [&::-webkit-slider-thumb]:focus:bg-blue-700 [&::-moz-range-thumb]:bg-blue-600 [&::-moz-range-thumb]:hover:bg-blue-700 [&::-moz-range-thumb]:focus:bg-blue-700 [&::-ms-thumb]:bg-blue-600 [&::-ms-thumb]:hover:bg-blue-700 [&::-ms-thumb]:focus:bg-blue-700"
               />
               <span className="text-gray-500 dark:text-gray-400 w-8">{searchThreshold}</span>
             </div>
@@ -205,7 +205,7 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
               </div>
             </div>
             
-            {searchResults.map((result, index) => (
+            {searchResults.map((result: any, index: number) => (
               <div
                 key={result.id}
                 className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 hover:shadow-md transition-shadow"
@@ -216,10 +216,10 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
                       #{index + 1} • Page {result.page_no} • Chunk {result.chunk_index}
                     </span>
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      result.matchType === 'exact' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                      result.matchType === 'fuzzy' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                      result.matchType === 'partial' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                      'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                      result.matchType === 'exact' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 capitalize' :
+                      result.matchType === 'fuzzy' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 capitalize' :
+                      result.matchType === 'partial' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 capitalize' :
+                      'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 capitalize'
                     }`}>
                       {result.matchType}
                     </span>
@@ -241,7 +241,7 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
                 />
                 {result.highlights && result.highlights.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {result.highlights.slice(0, 5).map((highlight, idx) => (
+                    {result.highlights.slice(0, 5).map((highlight: string, idx: number) => (
                       <span
                         key={idx}
                         className="text-xs px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded text-gray-600 dark:text-gray-300"
@@ -269,7 +269,7 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
         </div>
         
         <div className="space-y-4">
-          {currentChunks.map((chunk, index) => (
+          {currentChunks.map((chunk: any, index: number) => (
             <div
               key={chunk.id}
               className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
