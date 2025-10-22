@@ -244,7 +244,7 @@ Current implementation prioritizes simplicity for Edge Function compatibility.
 ### 1. Upload a PDF
 
 - Drag & drop or click to select a PDF file
-- Max size: 100MB (configurable in `app/api/upload/route.ts`)
+- Max size: 50MB (configurable in `app/api/upload/route.ts`)
 - Click "Upload & Parse"
 
 ### 2. Monitor Processing

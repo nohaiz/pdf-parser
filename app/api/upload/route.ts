@@ -20,11 +20,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Optional: Validate file size (e.g., max 100MB)
-    const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+    // Optional: Validate file size (e.g., max 50MB)
+    const MAX_FILE_SIZE = 100 * 1024 * 1024; // 50MB
     if (fileSize && fileSize > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { error: 'File size exceeds maximum limit of 100MB' },
+        { error: 'File size exceeds maximum limit of 50MB' },
         { status: 400 }
       );
     }
