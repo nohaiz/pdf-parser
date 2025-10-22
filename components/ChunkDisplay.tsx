@@ -179,7 +179,7 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
                 max="50"
                 value={searchThreshold}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchThreshold(parseInt(e.target.value))}
-                className="w-20"
+                className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:bg-blue-600 [&::-webkit-slider-thumb]:hover:bg-blue-700 [&::-webkit-slider-thumb]:focus:bg-blue-700 [&::-moz-range-thumb]:bg-blue-600 [&::-moz-range-thumb]:hover:bg-blue-700 [&::-moz-range-thumb]:focus:bg-blue-700 [&::-ms-thumb]:bg-blue-600 [&::-ms-thumb]:hover:bg-blue-700 [&::-ms-thumb]:focus:bg-blue-700"
               />
               <span className="text-gray-500 dark:text-gray-400 w-8">{searchThreshold}</span>
             </div>
@@ -216,10 +216,10 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
                       #{index + 1} • Page {result.page_no} • Chunk {result.chunk_index}
                     </span>
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      result.matchType === 'exact' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                      result.matchType === 'fuzzy' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                      result.matchType === 'partial' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                      'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
+                      result.matchType === 'exact' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 capitalize' :
+                      result.matchType === 'fuzzy' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 capitalize' :
+                      result.matchType === 'partial' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 capitalize' :
+                      'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 capitalize'
                     }`}>
                       {result.matchType}
                     </span>
