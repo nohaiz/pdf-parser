@@ -24,6 +24,8 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [chunksPerPage] = useState(10);
 
   useEffect(() => {
     fetchDocumentData();
@@ -64,6 +66,21 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
       console.error('Search error:', err);
     } finally {
       setSearching(false);
+    }
+  };
+
+  // Pagination logic
+  const totalPages = data ? Math.ceil(data.allChunks.length / chunksPerPage) : 0;
+  const startIndex = (currentPage - 1) * chunksPerPage;
+  const endIndex = startIndex + chunksPerPage;
+  const currentChunks = data ? data.allChunks.slice(startIndex, endIndex) : [];
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    // Scroll to top of chunks section
+    const chunksSection = document.getElementById('chunks-section');
+    if (chunksSection) {
+      chunksSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -164,20 +181,26 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
         )}
       </div>
 
-      {/* Sample Chunks */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-          Sample Chunks (First 3)
-        </h2>
+      {/* All Chunks with Pagination */}
+      <div id="chunks-section" className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            Document Chunks
+          </h2>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Showing {startIndex + 1}-{Math.min(endIndex, data.allChunks.length)} of {data.allChunks.length} chunks
+          </div>
+        </div>
+        
         <div className="space-y-4">
-          {data.sampleChunks.map((chunk, index) => (
+          {currentChunks.map((chunk, index) => (
             <div
               key={chunk.id}
               className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
             >
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                  Chunk {index + 1} • Page {chunk.page_no}
+                  Chunk {startIndex + index + 1} • Page {chunk.page_no}
                 </span>
                 <span className="text-xs text-gray-500 dark:text-gray-500">
                   {chunk.token_count} tokens
@@ -195,6 +218,74 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
             </div>
           ))}
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="mt-6 flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1}
+                className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600"
+              >
+                First
+              </button>
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600"
+              >
+                Previous
+              </button>
+            </div>
+
+            <div className="flex items-center space-x-1">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`px-3 py-2 text-sm font-medium rounded-md ${
+                      currentPage === pageNum
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600"
+              >
+                Next
+              </button>
+              <button
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600"
+              >
+                Last
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
