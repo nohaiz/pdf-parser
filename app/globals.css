@@ -28,3 +28,29 @@ mark {
   padding: 0.1em 0.2em;
   border-radius: 0.2em;
 }
+
+/* Smart search highlighting */
+.search-highlight {
+  background-color: #fef08a;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.search-highlight:hover {
+  background-color: #fde047;
+  transform: scale(1.02);
+}
+
+/* Dark mode highlighting */
+@media (prefers-color-scheme: dark) {
+  .search-highlight {
+    background-color: #fbbf24;
+    color: #1f2937;
+  }
+
+  .search-highlight:hover {
+    background-color: #f59e0b;
+  }
+}
