@@ -62,13 +62,6 @@ export default function Home() {
             </>
           )}
         </div>
-
-        {/* Footer */}
-        <footer className="mt-16 text-center text-sm text-gray-500 dark:text-gray-500">
-          <p>
-            Built with Next.js, Supabase, and intelligent text chunking • Time-boxed project (4-6 hrs)
-          </p>
-        </footer>
       </div>
     </main>
   );
