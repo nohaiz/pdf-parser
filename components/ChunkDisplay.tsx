@@ -154,7 +154,7 @@ export default function ChunkDisplay({ documentId }: ChunkDisplayProps) {
           <div className="flex space-x-2">
             <input
               type="text"
-              placeholder="Search with fuzzy matching (try: 'documnt', 'parsing', 'chunking')..."
+              placeholder="Search with fuzzy matching (try: 'document', 'parsing', 'chunking')..."
               value={searchQuery}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
             onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleSearch()}
