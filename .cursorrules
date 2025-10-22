@@ -1,0 +1,146 @@
+# PDF Parser - Cursor Rules
+
+## Project Context
+
+This is a Next.js 14 + Supabase PDF parsing application with intelligent text chunking.
+
+## Tech Stack
+
+- **Frontend**: Next.js 14 (App Router), React, TypeScript, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Storage, Edge Functions)
+- **PDF Parsing**: PDF.js (pdfjs-dist)
+- **Testing**: Jest + React Testing Library
+
+## Code Style
+
+- Use TypeScript strict mode
+- Prefer functional components with hooks
+- Use async/await over promises
+- Add JSDoc comments for complex functions
+- Keep functions under 50 lines when possible
+
+## File Organization
+
+- Components in `/components` (PascalCase.tsx)
+- Utilities in `/lib` or `/utils` (camelCase.ts)
+- API routes in `/app/api` (route.ts)
+- Edge Functions in `/supabase/functions`
+
+## Naming Conventions
+
+- Components: PascalCase (e.g., `UploadForm.tsx`)
+- Files: camelCase (e.g., `tokenCounter.ts`)
+- Constants: UPPER_SNAKE_CASE
+- Functions: camelCase
+- Interfaces: PascalCase with `I` prefix optional
+
+## Key Patterns
+
+### Supabase Client
+
+```typescript
+// Client-side
+import { createBrowserClient } from '@/lib/supabase';
+const supabase = createBrowserClient();
+
+// Server-side (API routes)
+import { createServerClient } from '@/lib/supabase';
+const supabase = createServerClient();
+```
+
+### Error Handling
+
+```typescript
+try {
+  // Operation
+} catch (error) {
+  console.error('Context:', error);
+  return NextResponse.json(
+    { error: 'User-friendly message' },
+    { status: 500 }
+  );
+}
+```
+
+### Type Safety
+
+- Always use TypeScript types from `/lib/types.ts`
+- Avoid `any` unless absolutely necessary
+- Use proper type guards for user input
+
+## Testing
+
+- Unit tests for pure functions (especially chunker)
+- Test edge cases (empty, null, special characters)
+- Mock Supabase calls in tests
+
+## Documentation
+
+- Add JSDoc for exported functions
+- Update README if adding features
+- Document trade-offs in TRADEOFFS.md
+
+## Security
+
+- NEVER expose `SUPABASE_SERVICE_ROLE_KEY` to client
+- Always use RLS policies
+- Validate user input in API routes
+- Use signed URLs for Storage access
+
+## Performance
+
+- Use indexes for database queries
+- Batch inserts when possible (100 chunks at a time)
+- Minimize Edge Function execution time
+- Cache when appropriate
+
+## Common Tasks
+
+### Add a new API route
+
+1. Create `/app/api/{name}/route.ts`
+2. Export `GET`, `POST`, etc.
+3. Use `createServerClient()` for Supabase
+4. Return `NextResponse.json()`
+
+### Add a new component
+
+1. Create `/components/{Name}.tsx`
+2. Use TypeScript props interface
+3. Add to main page or other component
+
+### Modify chunking algorithm
+
+1. Edit `/lib/chunker.ts`
+2. Update tests in `/tests/chunker.test.ts`
+3. Run `npm test` to verify
+
+### Update database schema
+
+1. Add SQL to new migration file
+2. Run `supabase db push`
+3. Update types in `/lib/types.ts`
+
+## Environment Variables
+
+Required in `.env.local`:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `NEXT_PUBLIC_STORAGE_BUCKET`
+
+## Git Workflow
+
+- Commit messages: conventional commits format
+- Never commit `.env.local`
+- Test before pushing
+
+## AI Assistant Guidelines
+
+- Prioritize type safety
+- Follow existing patterns
+- Add tests for new logic
+- Update documentation
+- Consider security implications
+- Think about scale (but don't over-engineer)
+
